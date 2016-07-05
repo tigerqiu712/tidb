@@ -205,49 +205,49 @@ func (ps *perfSchema) EndStatement(state *StatementState) {
 }
 
 func state2Record(state *StatementState) []types.Datum {
-	return types.MakeDatums(
-		state.connID,             // THREAD_ID
-		state.info.key,           // EVENT_ID
-		nil,                      // END_EVENT_ID
-		state.info.name,          // EVENT_NAME
-		state.source,             // SOURCE
-		uint64(state.timerStart), // TIMER_START
-		uint64(state.timerEnd),   // TIMER_END
-		nil, // TIMER_WAIT
-		uint64(state.lockTime),             // LOCK_TIME
-		state.sqlText,                      // SQL_TEXT
-		nil,                                // DIGEST
-		nil,                                // DIGEST_TEXT
-		state.schemaName,                   // CURRENT_SCHEMA
-		nil,                                // OBJECT_TYPE
-		nil,                                // OBJECT_SCHEMA
-		nil,                                // OBJECT_NAME
-		nil,                                // OBJECT_INSTANCE_BEGIN
-		nil,                                // MYSQL_ERRNO,
-		nil,                                // RETURNED_SQLSTATE
-		nil,                                // MESSAGE_TEXT
-		uint64(state.errNum),               // ERRORS
-		uint64(state.warnNum),              // WARNINGS
-		state.rowsAffected,                 // ROWS_AFFECTED
-		state.rowsSent,                     // ROWS_SENT
-		state.rowsExamined,                 // ROWS_EXAMINED
-		uint64(state.createdTmpDiskTables), // CREATED_TMP_DISK_TABLES
-		uint64(state.createdTmpTables),     // CREATED_TMP_TABLES
-		uint64(state.selectFullJoin),       // SELECT_FULL_JOIN
-		uint64(state.selectFullRangeJoin),  // SELECT_FULL_RANGE_JOIN
-		uint64(state.selectRange),          // SELECT_RANGE
-		uint64(state.selectRangeCheck),     // SELECT_RANGE_CHECK
-		uint64(state.selectScan),           // SELECT_SCAN
-		uint64(state.sortMergePasses),      // SORT_MERGE_PASSES
-		uint64(state.sortRange),            // SORT_RANGE
-		uint64(state.sortRows),             // SORT_ROWS
-		uint64(state.sortScan),             // SORT_SCAN
-		uint64(state.noIndexUsed),          // NO_INDEX_USED
-		uint64(state.noGoodIndexUsed),      // NO_GOOD_INDEX_USED
-		nil, // NESTING_EVENT_ID
-		nil, // NESTING_EVENT_TYPE
-		nil, // NESTING_EVENT_LEVEL
-	)
+	ret := make([]types.Datum, 41)
+	ret[0].SetUint64(state.connID)                        // THREAD_ID
+	ret[1].SetUint64(state.info.key)                      // EVENT_ID
+	ret[2].SetNull()                                      // END_EVENT_ID
+	ret[3].SetString(state.info.name)                     // EVENT_NAME
+	ret[4].SetString(state.source)                        // SOURCE
+	ret[5].SetUint64(uint64(state.timerStart))            // TIMER_START
+	ret[6].SetUint64(uint64(state.timerEnd))              // TIMER_END
+	ret[7].SetNull()                                      // TIMER_WAIT
+	ret[8].SetUint64(uint64(state.lockTime))              // LOCK_TIME
+	ret[9].SetString(state.sqlText)                       // SQL_TEXT
+	ret[10].SetNull()                                     // DIGEST
+	ret[11].SetNull()                                     // DIGEST_TEXT
+	ret[12].SetString(state.schemaName)                   // CURRENT_SCHEMA
+	ret[13].SetNull()                                     // OBJECT_TYPE
+	ret[14].SetNull()                                     // OBJECT_SCHEMA
+	ret[15].SetNull()                                     // OBJECT_NAME
+	ret[16].SetNull()                                     // OBJECT_INSTANCE_BEGIN
+	ret[17].SetNull()                                     // MYSQL_ERRNO,
+	ret[18].SetNull()                                     // RETURNED_SQLSTATE
+	ret[19].SetNull()                                     // MESSAGE_TEXT
+	ret[20].SetUint64(uint64(state.errNum))               // ERRORS
+	ret[21].SetUint64(uint64(state.warnNum))              // WARNINGS
+	ret[22].SetUint64(state.rowsAffected)                 // ROWS_AFFECTED
+	ret[23].SetUint64(state.rowsSent)                     // ROWS_SENT
+	ret[24].SetUint64(state.rowsExamined)                 // ROWS_EXAMINED
+	ret[25].SetUint64(uint64(state.createdTmpDiskTables)) // CREATED_TMP_DISK_TABLES
+	ret[26].SetUint64(uint64(state.createdTmpTables))     // CREATED_TMP_TABLES
+	ret[27].SetUint64(uint64(state.selectFullJoin))       // SELECT_FULL_JOIN
+	ret[28].SetUint64(uint64(state.selectFullRangeJoin))  // SELECT_FULL_RANGE_JOIN
+	ret[29].SetUint64(uint64(state.selectRange))          // SELECT_RANGE
+	ret[30].SetUint64(uint64(state.selectRangeCheck))     // SELECT_RANGE_CHECK
+	ret[31].SetUint64(uint64(state.selectScan))           // SELECT_SCAN
+	ret[32].SetUint64(uint64(state.sortMergePasses))      // SORT_MERGE_PASSES
+	ret[33].SetUint64(uint64(state.sortRange))            // SORT_RANGE
+	ret[34].SetUint64(uint64(state.sortRows))             // SORT_ROWS
+	ret[35].SetUint64(uint64(state.sortScan))             // SORT_SCAN
+	ret[36].SetUint64(uint64(state.noIndexUsed))          // NO_INDEX_USED
+	ret[37].SetUint64(uint64(state.noGoodIndexUsed))      // NO_GOOD_INDEX_USED
+	ret[38].SetNull()                                     // NESTING_EVENT_ID
+	ret[39].SetNull()                                     // NESTING_EVENT_TYPE
+	ret[40].SetNull()                                     // NESTING_EVENT_LEVEL
+	return ret
 }
 
 func (ps *perfSchema) updateEventsStmtsCurrent(connID uint64, record []types.Datum) error {
